@@ -1,3 +1,5 @@
+"use strict"
+
 let orange = "welcome to orange";
 
 let output1 = orange.toUpperCase();

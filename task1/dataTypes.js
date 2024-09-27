@@ -1,3 +1,5 @@
+"use strict"
+
 //1
 //cash flow ratio
 let cash = 1000;
