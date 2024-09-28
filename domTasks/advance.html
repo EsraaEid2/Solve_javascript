@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <title>JavaScript DOM Advance | shopping list</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .form_container {
+            margin-top: 20px;
+        }
+
+        label {
+            margin-right: 10px;
+        }
+
+        input[type="text"] {
+            padding: 5px;
+            font-size: 16px;
+            width: 200px;
+        }
+
+        button {
+            padding: 6px 12px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            font-size: 18px;
+            display: flex;
+        }
+
+        /* Make the delete button smaller */
+        .delete_btn {
+            background-color: darkred;
+            width: 60px;
+            height: 35px;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 3px 6px;
+            /* Smaller padding */
+            font-size: 12px;
+            /* Smaller font size */
+        }
+
+        .delete_btn:hover {
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <form class="form_container">
+        <h2>My shopping list</h2>
+        <br>
+        <div>
+            <label for="item">Enter a new item:</label>
+            <input type="text" name="item" id="item">
+        </div>
+        <button type="button" onclick="addItem()">Add item</button>
+    </form>
+
+    <ul id="shopping_list"></ul>
+
+    <script>
+        function addItem() {
+            const ItemInput = document.getElementById('item');
+            const itemValue = ItemInput.value.trim(); //removes white spaces
+
+            if (itemValue) {
+                const listItem = document.createElement('li');
+                listItem.textContent = itemValue;
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = "Delete";
+                deleteBtn.className = 'delete_btn'; // Corrected here
+                deleteBtn.onclick = function () {
+                    listItem.remove();
+                };
+
+                // Add delete button to li
+                listItem.appendChild(deleteBtn);
+
+                // Add li to shopping list
+                document.getElementById('shopping_list').appendChild(listItem);
+
+                // Clear and refocus input field
+                ItemInput.value = "";
+                ItemInput.focus();
+            } else {
+                alert("Please enter an item.");
+            }
+        }
+    </script>
+
+</body>
+
+</html>
