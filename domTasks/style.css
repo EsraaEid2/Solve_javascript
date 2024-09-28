@@ -32,3 +32,15 @@ button {
     border-radius: 4px;
     font-size: 16px;
 }
+
+.error {
+    color: red;
+    font-size: 0.9em;
+    margin-left: 10px;
+}
+
+.success{
+    color: green;
+    font-size: 0.9em;
+    margin-left: 10px;
+}

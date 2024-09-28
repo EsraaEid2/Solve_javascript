@@ -1,26 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./style.css">
     <title>JavaScript DOM Basic</title>
 </head>
+
 <body>
-        <form id="myForm">
-            <input type="text" id="username" placeholder="Enter your username">
-            <input type="password" id="password" placeholder="Enter your password">
-            <input type="password" id="confirm-password" placeholder="Re-enter your password">
-            <button type="submit">Submit</button>
-        </form>
+    <form id="myForm">
+        <input type="text" id="username" placeholder="Enter your username" required>
+        <span id="usernameError" class="error"></span>
+        <br><br>
+        <input type="password" id="password" placeholder="Enter your password" required>
+        <span id="passwordError" class="error"></span>
+        <br><br>
+        <input type="password" id="confirm_password" placeholder="Re-enter your password" required>
+        <span id="confirmPasswordError" class="error"></span>
+        <br><br>
+        <button id="registerButton" type="submit">Register</button>
 
+    </form>
 
-
-
-
-
-
-        
-    <script href="./main.js"></script>
+    <script src="./main1.js"></script>
 </body>
+
 </html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .highlight {
+            background-color: yellow;
+        }
+    </style>
+    <title>JavaScript DOM Med</title>
+</head>
+
+<body>
+    <h1>Excercise 1+2</h1>
+    <p id="myParagraph">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestiae veniam fugit sit rem
+        inventore cupiditate
+        incidunt atque debitis ab. Enim eligendi vel cum corporis alias ex laboriosam corrupti amet in asperiores
+        ducimus rem eos, libero blanditiis suscipit maiores veritatis ipsa? Nihil totam, libero natus perferendis
+        aspernatur nulla impedit deserunt et dolorem exercitationem necessitatibus doloribus modi. Amet recusandae non
+        numquam dignissimos, itaque fugiat officiis quam quod ullam blanditiis perspiciatis nisi, odit nostrum rerum
+        culpa? Quae, ipsa laboriosam, in facilis accusantium, perferendis blanditiis ab repellendus ducimus distinctio
+        hic! Adipisci at eligendi voluptatibus qui veritatis, sint Lorem ipsum dolor sit amet consectetur adipisicing
+        elit. Aliquam, minima! laborum ut voluptas iusto porro ipsam? Officia.
+    </p>
+    
+
+    
+    <script>
+        //exsercise 1
+        // Get the paragraph element
+        const paragraph = document.getElementById('myParagraph');
+
+        // Split the paragraph text into words
+        const words = paragraph.innerText.split(" ");
+
+        // Initialize an empty string to store the updated text
+        let updatedText = "";
+
+        // Use a for loop to iterate through each word
+        for (let i = 0; i < words.length; i++) {
+            if (words[i].length > 8) {
+                updatedText += `<span class="highlight">${words[i]}</span>`;
+            } else {
+                updatedText += words[i];
+            }
+            if (i < words.length - 1) {
+                updatedText += " ";
+            }
+        }
+
+        // Set the updated HTML content back to the paragraph
+        paragraph.innerHTML = updatedText;
+
+        //excercise 2 Add a link back to the source of the text after the paragraph tag.
+        const back_to_source=document.createElement('a');
+        back_to_source.setAttribute('href','https://google.com/');
+        back_to_source.textContent=' Back to source of text';
+        back_to_source.target='_blank';
+        document.body.appendChild(back_to_source);
+
+    </script>
+</body>
+
+</html>
