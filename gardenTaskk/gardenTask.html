@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 10px;
+        }
+
+        img {
+            max-width: 100px;
+        }
+    </style>
+    <title>Garden Task</title>
+</head>
+
+<body>
+    <section class="containerSec">
+        <div class="formDiv">
+            <form action="#" id="formGarden">
+                <fieldset>
+                    <legend>Garden Information</legend>
+                    <label for="nameInp">Name</label>
+                    <br>
+                    <input type="text" name="nameInp" id="nameInp" required>
+                    <br><br>
+                    <label for="selImg">Image</label>
+                    <br>
+                    <select name="selImg" id="selImg" required>
+                        <option value="alstroemerias">alstroemerias</option>
+                        <option value="gardenias">gardenias</option>
+                        <option value="orchids">orchids</option>
+                        <option value="peonies">peonies</option>
+                        <option value="roses">roses</option>
+                        <option value="sunflowers">sunflowers</option>
+                        <option value="tulips">tulips</option>
+                    </select>
+                    <br><br>
+                    <label for="sesonInp">Season</label>
+                    <br>
+                    <input type="text" name="sesonInp" id="sesonInp" required>
+                    <br><br>
+                    <button type="submit">Send</button>
+                    <button type="button" id="clearList">Clear List</button>
+                </fieldset>
+            </form>
+        </div>
+
+        <div class="tableDiv" id="tableGarden">
+            <table id="tabCon">
+                <thead id="headCon"></thead>
+                <tbody id="bodCon"></tbody>
+                <tfoot id="tfoCon"></tfoot>
+            </table>
+        </div>
+    </section>
+
+    <script>
+        'use strict';
+
+        let flowerArr = [];
+
+        // Load existing flowers from Local Storage when the page loads
+        window.addEventListener('load', () => {
+            let storedFlowers = localStorage.getItem('flowers');
+            if (storedFlowers) {
+                flowerArr = JSON.parse(storedFlowers);
+                renderInfo();
+            }
+        });
+
+        let formGarden = document.getElementById("formGarden");
+        formGarden.addEventListener('submit', addFlower);
+
+        function addFlower(event) {
+            event.preventDefault();
+
+            let name = event.target.nameInp.value;
+            let image = event.target.selImg.value;
+            let season = event.target.sesonInp.value;
+
+            new Flower(name, image, season);
+            saveToLocalStorage();
+            renderInfo();
+        }
+
+        function Flower(nameFlo, imageFlo, seasonFlo) {
+            this.FlowerName = nameFlo;
+            this.flowerImg = imageFlo;
+            this.flowerSeason = seasonFlo;
+            this.flowerPrice = priceMount(60, 200);
+
+            flowerArr.push(this);
+        }
+
+        // Random price calculation
+        function priceMount(min, max) {
+            return Math.floor(Math.random() * (max - min) + min);
+        }
+
+        // Save flowers to localStorage
+        function saveToLocalStorage() {
+            localStorage.setItem('flowers', JSON.stringify(flowerArr));
+        }
+
+        // Create table header
+        function createHeader() {
+            let trEle = document.createElement('tr');
+            headCon.appendChild(trEle);
+
+            let thEl1 = document.createElement('th');
+            thEl1.textContent = "Name";
+            trEle.appendChild(thEl1);
+
+            let thEl2 = document.createElement('th');
+            thEl2.textContent = "Image";
+            trEle.appendChild(thEl2);
+
+            let thEl3 = document.createElement('th');
+            thEl3.textContent = "Season";
+            trEle.appendChild(thEl3);
+
+            let thEl4 = document.createElement('th');
+            thEl4.textContent = "Price";
+            trEle.appendChild(thEl4);
+        }
+
+        createHeader();
+
+        function renderInfo() {
+            let taBody = document.getElementById("bodCon");
+            let taFooter = document.getElementById("tfoCon");
+
+            taBody.innerHTML = "";
+            let sum = 0;
+
+            for (let i = 0; i < flowerArr.length; i++) {
+                let trBody = document.createElement("tr");
+                taBody.appendChild(trBody);
+
+                // Create table data for Flower Name
+                let tdEl1 = document.createElement('td');
+                tdEl1.textContent = flowerArr[i].FlowerName;
+                trBody.appendChild(tdEl1);
+
+                // Create table data for Image
+                let tdEl2 = document.createElement('td');
+                let imgElement = document.createElement('img');
+                imgElement.src = `./images/${flowerArr[i].flowerImg}.jpg`; // Assuming images are in "images" folder with .jpg extension
+                imgElement.alt = flowerArr[i].FlowerName;
+                tdEl2.appendChild(imgElement);
+                trBody.appendChild(tdEl2);
+
+                // Create table data for Season
+                let tdEl3 = document.createElement('td');
+                tdEl3.textContent = flowerArr[i].flowerSeason;
+                trBody.appendChild(tdEl3);
+
+                // Create table data for Price
+                let tdEl4 = document.createElement('td');
+                tdEl4.textContent = flowerArr[i].flowerPrice;
+                trBody.appendChild(tdEl4);
+
+                // Create Edit and Save buttons
+                let tdEl5 = document.createElement('td');
+                let editBtn = document.createElement('button');
+                editBtn.textContent = 'Edit';
+                editBtn.addEventListener('click', () => editRow(i, trBody, saveBtn, editBtn));
+                tdEl5.appendChild(editBtn);
+
+                let saveBtn = document.createElement('button');
+                saveBtn.textContent = 'Save';
+                saveBtn.style.display = 'none';  // Initially hide the save button
+                saveBtn.addEventListener('click', () => saveRow(i, trBody, saveBtn, editBtn));
+                tdEl5.appendChild(saveBtn);
+
+                trBody.appendChild(tdEl5);
+
+                // Create a Delete button for each row
+                let tdEl6 = document.createElement('td');
+                let deleteBtn = document.createElement('button');
+                deleteBtn.textContent = "X";
+                deleteBtn.style.color = "red";
+                deleteBtn.addEventListener('click', () => {
+                    flowerArr.splice(i, 1);  // Remove the flower from the array
+                    saveToLocalStorage();    // Save the updated array to localStorage
+                    renderInfo();            // Re-render the table
+                });
+                tdEl6.appendChild(deleteBtn);
+                trBody.appendChild(tdEl6);
+
+                sum += flowerArr[i].flowerPrice;
+            }
+
+            footerRender(sum);
+        }
+        // Function to make a row editable
+        function editRow(index, trBody) {
+            let tdElements = trBody.querySelectorAll('td');
+
+            // Create input fields for the flower name, season, and price
+            let nameInput = document.createElement('input');
+            nameInput.type = 'text';
+            nameInput.value = flowerArr[index].FlowerName;
+            tdElements[0].innerHTML = '';
+            tdElements[0].appendChild(nameInput);
+
+            let seasonInput = document.createElement('input');
+            seasonInput.type = 'text';
+            seasonInput.value = flowerArr[index].flowerSeason;
+            tdElements[2].innerHTML = '';
+            tdElements[2].appendChild(seasonInput);
+
+            let priceInput = document.createElement('input');
+            priceInput.type = 'number';
+            priceInput.value = flowerArr[index].flowerPrice;
+            tdElements[3].innerHTML = '';
+            tdElements[3].appendChild(priceInput);
+
+            // Show Save button and hide Edit button
+            let buttons = trBody.querySelectorAll('button');
+            buttons[0].style.display = 'none'; // Hide Edit button
+            buttons[1].style.display = 'inline'; // Show Save button
+        }
+
+        // Function to save the edited row
+        function saveRow(index, trBody, saveBtn, editBtn) {
+            let tdElements = trBody.querySelectorAll('td');
+
+            // Get the updated values from the input fields
+            let updatedName = tdElements[0].querySelector('input').value;
+            let updatedSeason = tdElements[2].querySelector('input').value;
+            let updatedPrice = tdElements[3].querySelector('input').value;
+
+            // Update the flowerArr with new data
+            flowerArr[index].FlowerName = updatedName;
+            flowerArr[index].flowerSeason = updatedSeason;
+            flowerArr[index].flowerPrice = parseFloat(updatedPrice);
+
+            // Update the local storage with the new flowerArr
+            saveToLocalStorage();
+
+            // Replace input fields with updated text
+            tdElements[0].textContent = updatedName;
+            tdElements[2].textContent = updatedSeason;
+            tdElements[3].textContent = updatedPrice;
+
+            // Show Edit button and hide Save button
+            saveBtn.style.display = 'none'; // Hide Save button
+            editBtn.style.display = 'inline'; // Show Edit button
+        }
+
+
+        function footerRender(sum) {
+            let taFooter = document.getElementById("tfoCon");
+            taFooter.innerHTML = "";
+            let trFo = document.createElement('tr');
+            taFooter.appendChild(trFo);
+
+            let tdFo = document.createElement('td');
+            tdFo.setAttribute('colspan', '4');
+            tdFo.textContent = `Total Price: ${sum}`;
+            trFo.appendChild(tdFo);
+        }
+
+        // Clear the local storage and reset the list
+        let clearBtn = document.getElementById('clearList');
+        clearBtn.addEventListener('click', function () {
+            localStorage.clear();
+            flowerArr = [];
+            renderInfo();
+        });
+    </script>
+</body>
+
+</html>
