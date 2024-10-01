@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+          #pokemonsContainer {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            /* 3 columns of equal width */
+            gap: 20px;
+            /* Space between grid items */
+            padding: 20px;
+        }
+
+        #pokemonsContainer div {
+            border: 1px solid #ccc;
+            padding: 15px;
+            text-align: center;
+            background-color: #f9f9f9;
+        }
+
+        #pokemonsContainer img {
+            max-width: 100px;
+            height: auto;
+            margin-top: 10px;
+        }
+    </style>
+    <title>Poke</title>
+</head>
+
+<body>
+    <h1>pokemons names</h1>
+    <div id="pokemonsContainer">
+
+    </div>
+    <script src="./pokeApi.js">
+
+    </script>
+</body>
+
+</html>
